@@ -10,9 +10,9 @@
 
     <UserControl.DataContext>
         <local:ViewModel/>
-        </UserControl.DataContext>
+    </UserControl.DataContext>
 
-        <Grid>
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="13*"/>
             <ColumnDefinition Width="7*"/>
@@ -22,8 +22,8 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1">
-            <chart:SfChart Height="380" Width="518">
+        <StackPanel Grid.Row="1" Margin="0,30,10,0">
+            <chart:SfChart Height="365" Width="491">
                 <!--Initialize the horizontal axis for the WPF Chart-->
                 <chart:SfChart.PrimaryAxis>
                     <chart:DateTimeAxis  LabelFormat="MMM dd" Foreground="White"/>
