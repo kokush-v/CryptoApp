@@ -27,8 +27,6 @@ namespace CryptoApp.View
             InitializeComponent();
 
             GetCoinsData(TopList);
-
-            
         }
 
         public static async void GetCoinsData(ListBox TopList)
@@ -49,15 +47,14 @@ namespace CryptoApp.View
                 TopList.Items.Add(coinRes.Data[i]);
             }
 
-            TopList.SelectedItem = TopList.Items[0];
         }
 
         private void Coin_Change(object sender, SelectionChangedEventArgs e)
         {
 
-            Asset coinId = (Asset)TopList.SelectedItem ;
+            Asset coin = (Asset)TopList.SelectedItem ;
 
-            AboutView.GetMarketsData(coinId.Id, coinId.Name, coinId.Url);
+            AboutView.GetMarketsData(coin);
 
         }
     }

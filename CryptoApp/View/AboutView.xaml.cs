@@ -17,6 +17,8 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using CryptoApp.Core.ReqModels;
 using static TestApp.Model.CoinCapResModel;
+using static CryptoApp.Core.ReqModels.MarketResModel;
+using System.Runtime.InteropServices;
 
 namespace CryptoApp.View
 {
@@ -26,7 +28,9 @@ namespace CryptoApp.View
         public static ListBox markets;
         public static TextBlock title;
         public static Image logo;
-       
+        public static Asset Coin;
+
+
         public AboutView()
         {
             InitializeComponent();
@@ -34,60 +38,83 @@ namespace CryptoApp.View
             markets = MarketList;
             title = Title;
             logo = Logo;
+
         }
 
         
 
-        public static async void GetMarketsData(String coinId, String coinName, String coinImg)
+        public static async void GetMarketsData(Asset coin)
         {
             markets.Items.Clear();
 
-            title.Text = coinName;
+            Coin = coin;
 
-            logo.Source = new BitmapImage(new Uri(coinImg));
+            title.Text = coin.Name;
 
-            string url = $"https://api.coincap.io/v2/assets/{coinId}/markets";
+            logo.Source = new BitmapImage(new Uri(coin.Url));
+
+            string url = $"https://api.coincap.io/v2/assets/{coin.Id}/markets";
 
             HttpClient client = new HttpClient();
             HttpResponseMessage res = await client.GetAsync(url);
             string content = await res.Content.ReadAsStringAsync();
             MarketResModel marketRes = JsonConvert.DeserializeObject<MarketResModel>(content);
 
-            for (int i = 0; i < 10; i++)
+           foreach(var item in marketRes.Data)
             {
-                marketRes.Data[i].PriceUsd = Math.Round(double.Parse(marketRes.Data[i].PriceUsd), 4).ToString()+"$";
+                item.PriceUsd = Math.Round(double.Parse(item.PriceUsd), 4).ToString()+"$";
 
-                markets.Items.Add(marketRes.Data[i]);
+                markets.Items.Add(item);
+            }
+
+           
+            
+            if(Coin != null && (Market)markets.Items[0] != null)
+            {
+                GetCharts(Coin, (Market)markets.Items[0]);
             }
         }
 
-        public static void GetCharts(Asset coin)
+        public static async void GetCharts(Asset coin, Market market)
         {
+            string url = $"https://finnhub.io/api/v1/crypto/candle?symbol={market.ExchangeId.ToUpper()}:{coin.Symbol.ToUpper()}{market.QuoteSymbol}&resolution=M&token=cga54lhr01qqlesgdgrgcga54lhr01qqlesgdgs0";
+
+            HttpClient client = new HttpClient();
+            HttpResponseMessage res = await client.GetAsync(url);
+            string content = await res.Content.ReadAsStringAsync();
+            CandleRes charts = JsonConvert.DeserializeObject<CandleRes>(content);
+
+            if (charts.l != null)
+            {
+                ViewModel.StockPriceDetails.Clear();
+                for (int i = 0; i < charts.l.Count; i++)
+                {
+                    ViewModel.StockPriceDetails.Add(new CandleChartModel() { Date = new DateTime(charts.t[i]), Open = charts.o[i], High = charts.h[i], Low = charts.l[i], Close = charts.c[i] });
+                }
+            }
+            else
+            {
+                MessageBox.Show("Sorry we couldn`t find this coin on markets", "Eror", MessageBoxButton.OK);
+            }
+
 
         }
 
-    }
-    public class CandleChartModel
-    {
-        public double Close { get; set; }
-        public double High { get; set; }
-        public double Low { get; set; }
-        public double Open { get; set; }
-        public String Status { get; set; }
-        public DateTime Date { get; set; }
-        public double Volume { get; set; }
+        private void MarketList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (Coin != null && (Market)markets.SelectedItem != null)
+            {
+                GetCharts(Coin, (Market)markets.SelectedItem);
+            }
+        }
     }
     public class ViewModel
     {
         public ViewModel()
         {
-            this.StockPriceDetails = new ObservableCollection<CandleChartModel>();
-            DateTime date = new DateTime(2012, 4, 1);
-
-            this.StockPriceDetails.Add(new CandleChartModel() { Date = date.AddDays(0), Open = 873.8, High = 878.85, Low = 855.5, Close = 860.5 });
-            this.StockPriceDetails.Add(new CandleChartModel() { Date = date.AddDays(1), Open = 873.8, High = 878.85, Low = 855.5, Close = 860.5 });
-            
+            StockPriceDetails = new ObservableCollection<CandleChartModel>();
         }
-        public ObservableCollection<CandleChartModel> StockPriceDetails { get; set; }
+        public static ObservableCollection<CandleChartModel> StockPriceDetails { get; set; }
     }
 }

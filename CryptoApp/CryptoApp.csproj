@@ -132,6 +132,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ReqModels\CandleRes.cs" />
+    <Compile Include="ReqModels\CandleChartModel.cs" />
     <Compile Include="ReqModels\CoinCapResModel.cs" />
     <Compile Include="ReqModels\MarketResModel.cs" />
     <Compile Include="MainWindow.xaml.cs">

@@ -84,6 +84,7 @@
                  FontSize="18"
                  Background="#10000000"
                  BorderBrush="Transparent"
+                 SelectionChanged="MarketList_SelectionChanged"
                  Grid.Row="1"
                  Grid.Column="1" >
 

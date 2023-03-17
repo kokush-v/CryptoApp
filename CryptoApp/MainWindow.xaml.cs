@@ -118,12 +118,11 @@ namespace CryptoApp
         private void Coin_Change(object sender, SelectionChangedEventArgs e)
         {
 
-            Asset coinId = (Asset)SearchBar.SelectedItem;
+            Asset coin = (Asset)SearchBar.SelectedItem;
 
-            if (coinId != null)
+            if (coin != null)
             {
-                AboutView.GetMarketsData(coinId.Id, coinId.Name, coinId.Url);
-
+                AboutView.GetMarketsData(coin);
             }
 
         }
