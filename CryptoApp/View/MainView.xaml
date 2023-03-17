@@ -29,13 +29,11 @@
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
 
                         <Image Grid.Column="0" x:Name="Logo" MaxWidth="60" MaxHeight="60" Source="{Binding Url}" />
                         <TextBlock Grid.Column="1" x:Name="CoinName" Text="{Binding Name}" Style="{StaticResource TextList}"  />
                         <TextBlock Grid.Column="2" x:Name="Price" Text="{Binding PriceUsd}"  Style="{StaticResource TextList}" />
-                        <TextBlock Grid.Column="3" Text="$"  Style="{StaticResource TextList}" />
                         <ScrollBar x:Name="PART_VerticalScrollBar"
                                Value="{TemplateBinding ScrollViewer.VerticalOffset}"
                                Maximum="{TemplateBinding ScrollViewer.ScrollableHeight}"

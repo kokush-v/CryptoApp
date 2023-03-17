@@ -62,7 +62,15 @@ namespace CryptoApp.View
 
            foreach(var item in marketRes.Data)
             {
-                item.PriceUsd = Math.Round(double.Parse(item.PriceUsd), 4).ToString()+"$";
+                if(item.PriceUsd != null) 
+                { 
+                    item.PriceUsd = Math.Round(double.Parse(item.PriceUsd), 4).ToString() + "$";
+                }
+                else
+                {
+                    continue;
+                }
+                   
 
                 markets.Items.Add(item);
             }
