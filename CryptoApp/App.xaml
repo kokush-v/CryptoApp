@@ -1,0 +1,18 @@
+﻿<Application x:Class="CryptoApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:CryptoApp"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme/MenuButtonTheme.xaml"/>
+                <ResourceDictionary Source="Theme/TextList.xaml"/>
+                <ResourceDictionary Source="Theme/MarketTextList.xaml"/>
+                <ResourceDictionary Source="Theme/ScrollTheme.xaml"/>
+                <ResourceDictionary Source="Theme/ThemeChanger.xaml"/>
+                <ResourceDictionary Source="Theme/ListStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
